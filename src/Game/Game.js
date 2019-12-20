@@ -5,14 +5,16 @@ class Game extends Component {
         super(props);
         this.state = {
             history: [{
-            squares: Array(9).fill(null),
+                squares: Array(9).fill(null),
+                col: 0,
+                row: 0,
             }],
             stepNumber : 0,
             xIsNext: true,
         };
     }
 
-    handleClick(i) {
+    handleClick(i, j, k) {
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[history.length - 1];
         const squares = current.squares.slice();
@@ -22,7 +24,9 @@ class Game extends Component {
         squares[i] = this.state.xIsNext ? 'X' : 'O';
         this.setState({
             history: history.concat([{
-                squares: squares
+                squares: squares,
+                col: j,
+                row: k,
             }]),
             stepNumber: history.length,
             xIsNext: !this.state.xIsNext,
@@ -43,7 +47,7 @@ class Game extends Component {
 
         const moves = history.map((step, move) => {
             const desc = move ?
-                'Go to move #' + move :
+                'Go to move #' + move + ' (Col: ' + step.col + ' - Row: ' + step.row + ')':
                 'Go to game start';
             return (
                 <li key={move}>
@@ -63,7 +67,7 @@ class Game extends Component {
             <div className="game-board">
                 <Board
                     squares={current.squares}
-                    onClick={(i) => this.handleClick(i)}
+                    onClick={(i, j, k) => this.handleClick(i, j, k)}
                 />
             </div>
             <div className="game-info">
