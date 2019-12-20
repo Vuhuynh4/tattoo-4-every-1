@@ -47,8 +47,8 @@ class Game extends Component {
 
         const moves = history.map((step, move) => {
             const desc = move ?
-                'Go to move #' + move + ' (Col: ' + step.col + ' - Row: ' + step.row + ')':
-                'Go to game start';
+                'Move #' + move + ' (Col: ' + step.col + ' - Row: ' + step.row + ')':
+                'Restart';
             return (
                 <li key={move}>
                     <button onClick={() => this.jumpTo(move)}>{desc}</button>
@@ -72,7 +72,7 @@ class Game extends Component {
             </div>
             <div className="game-info">
                 <div>{status}</div>
-                <ol>{moves}</ol>
+                <ul>{moves}</ul>
             </div>
             </div>
         );
