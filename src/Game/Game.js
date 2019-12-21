@@ -47,13 +47,21 @@ class Game extends Component {
 
         const moves = history.map((step, move) => {
             const desc = move ?
-                'Move #' + move + ' (Col: ' + step.col + ' - Row: ' + step.row + ')':
-                'Restart';
-            return (
-                <li key={move}>
-                    <button onClick={() => this.jumpTo(move)}>{desc}</button>
-                </li>
-            );
+                    'Move #' + move + ' (Col: ' + step.col + ' - Row: ' + step.row + ') isBold: ' + this.state.stepNumber :
+                    'Restart';
+            if (this.state.stepNumber == move) {
+                return (
+                    <li key={move}>
+                        <button onClick={() => this.jumpTo(move)}><b>{desc}</b></button>
+                    </li>
+                );
+            } else {
+                return (
+                    <li key={move}>
+                        <button onClick={() => this.jumpTo(move)}>{desc}</button>
+                    </li>
+                );
+            }
         });
 
         let status;
