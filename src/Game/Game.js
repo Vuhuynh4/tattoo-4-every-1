@@ -47,7 +47,7 @@ class Game extends Component {
 
         const moves = history.map((step, move) => {
             const desc = move ?
-                    'Move #' + move + ' (Col: ' + step.col + ' - Row: ' + step.row + ') isBold: ' + this.state.stepNumber :
+                    'Move #' + move + ' (Col: ' + step.col + ' - Row: ' + step.row + ')' :
                     'Restart';
             if (this.state.stepNumber == move) {
                 return (
