@@ -49,7 +49,7 @@ class Game extends Component {
             const desc = move ?
                     'Move #' + move + ' (Col: ' + step.col + ' - Row: ' + step.row + ')' :
                     'Restart';
-            if (this.state.stepNumber == move) {
+            if (this.state.stepNumber === move) {
                 return (
                     <li key={move}>
                         <button onClick={() => this.jumpTo(move)}><b>{desc}</b></button>
