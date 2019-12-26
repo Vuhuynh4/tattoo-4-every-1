@@ -1,7 +1,9 @@
 .cr-header {
   margin-bottom: $spacer * .5;
   border-bottom: $border-width solid $border-color;
-
+  position: fixed;
+  top: 0;
+  width: 100%;
   &__nav-right {
     flex-direction: row;
     justify-content: flex-end;

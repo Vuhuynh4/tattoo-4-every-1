@@ -1,5 +1,6 @@
 import Page from 'components/Page';
-import React from 'react';
+import api from '../services/api';
+import React, {Component} from 'react';
 import {
   Button,
   Card,
@@ -15,440 +16,176 @@ import {
   Row,
 } from 'reactstrap';
 
-const StandardPaymentTester = () => {
-  return (
-    <Page title="Forms" breadcrumbs={[{ name: 'Forms', active: true }]}>
-      <Row>
-        <Col xl={6} lg={12} md={12}>
-          <Card>
-            <CardHeader>Input Types</CardHeader>
-            <CardBody>
-              <Form>
-                <FormGroup>
-                  <Label for="exampleEmail">Plain Text (Static)</Label>
-                  <Input
-                    plaintext
-                    value="Some plain text/ static value"
-                    readOnly
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="exampleEmail">Email</Label>
-                  <Input
-                    type="email"
-                    name="email"
-                    placeholder="with a placeholder"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="examplePassword">Password</Label>
-                  <Input
-                    type="password"
-                    name="password"
-                    placeholder="password placeholder"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="exampleUrl">Url</Label>
-                  <Input
-                    type="url"
-                    name="url"
-                    id="exampleUrl"
-                    placeholder="url placeholder"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="exampleNumber">Number</Label>
-                  <Input
-                    type="number"
-                    name="number"
-                    id="exampleNumber"
-                    placeholder="number placeholder"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="exampleDatetime">Datetime</Label>
-                  <Input
-                    type="datetime"
-                    name="datetime"
-                    id="exampleDatetime"
-                    placeholder="datetime placeholder"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="exampleDate">Date</Label>
-                  <Input
-                    type="date"
-                    name="date"
-                    id="exampleDate"
-                    placeholder="date placeholder"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="exampleTime">Time</Label>
-                  <Input
-                    type="time"
-                    name="time"
-                    id="exampleTime"
-                    placeholder="time placeholder"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="exampleColor">Color</Label>
-                  <Input
-                    type="color"
-                    name="color"
-                    id="exampleColor"
-                    placeholder="color placeholder"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="exampleSearch">Search</Label>
-                  <Input
-                    type="search"
-                    name="search"
-                    id="exampleSearch"
-                    placeholder="search placeholder"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="exampleSelect">Select</Label>
-                  <Input type="select" name="select">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                  </Input>
-                </FormGroup>
-                <FormGroup>
-                  <Label for="exampleSelectMulti">Select Multiple</Label>
-                  <Input type="select" name="selectMulti" multiple>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                  </Input>
-                </FormGroup>
-                <FormGroup>
-                  <Label for="exampleText">Text Area</Label>
-                  <Input type="textarea" name="text" />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="exampleFile">File</Label>
-                  <Input type="file" name="file" />
-                  <FormText color="muted">
-                    This is some placeholder block-level help text for the above
-                    input. It's a bit lighter and easily wraps to a new line.
-                  </FormText>
-                </FormGroup>
-                <FormGroup check>
-                  <Label check>
-                    <Input type="radio" /> Option one is this and that—be sure
-                    to include why it's great
-                  </Label>
-                </FormGroup>
-                <FormGroup check>
-                  <Label check>
-                    <Input type="checkbox" /> Check me out
-                  </Label>
-                </FormGroup>
-              </Form>
-            </CardBody>
-          </Card>
-        </Col>
+class StandardPaymentTester extends Component {
 
-        <Col xl={6} lg={12} md={12}>
-          <Card>
-            <CardHeader>Form Grid</CardHeader>
-            <CardBody>
-              <Form>
-                <FormGroup row>
-                  <Label for="exampleEmail" sm={2}>
-                    Email
-                  </Label>
-                  <Col sm={10}>
+  constructor(props){
+    super(props);
+    this.state = {
+      initData: {
+        momoPubKey: null,
+        partnerPubKey: null,
+        partnerCode: null,
+        checkInfoURL: null,
+        paymentNotifyURL: null,
+        reference1: null,
+        amount: 0,
+      },
+      checkInfoRequest: {
+        requestId: null,
+        reference1: null,
+      },
+      paymentNotifyRequest: {
+        requestId: null,
+        reference1: null,
+        amount: 0,
+      }
+    };
+  }
+
+  handleInitDataFieldValueChange = event => {
+    let fieldName = event.target.name;
+    this.setState({
+       initData: {
+        [fieldName]: event.target.value },
+    });
+  }
+
+  generateRequest() {
+    console.log('alo 1');
+    console.log('MoMo Pub Key:' + this.state.initData.momoPubKey);
+    console.log('Partner Pub Key:' + this.state.initData.partnerPubKey);
+    console.log('Partner Code:' + this.state.initData.partnerCode);
+    console.log('Reference 1:' + this.state.initData.reference1);
+    console.log('Amount:' + this.state.initData.amount);
+
+  }
+
+  doCalCheckInfo() {
+    console.log('alo 2');
+  }
+
+  doCalPaymentNotification() {
+    console.log('alo 3');
+  }
+
+  render() {
+    this.state.checkInfoRequest.requestId = Date.now();
+    this.state.paymentNotifyRequest.requestId = Date.now();
+    
+    const checkInfoRequestData = JSON.stringify(this.state.checkInfoRequest);
+    const paymentNotifyRequestData = JSON.stringify(this.state.paymentNotifyRequest);
+    return (
+      <Page title="Sandbox Testing" breadcrumbs={[{ name: 'Forms', active: true }]}>
+        <Row>
+          <Col xl={6} lg={12} md={12}>
+            <Card>
+              <CardHeader>Settings</CardHeader>
+              <CardBody>
+                <Form>
+                  <FormGroup>
+                    <Label for="momoPublicKeyTextArea">MOMO Public Key Here</Label>
+                    <Input type="textarea" name="momoPubKey" onChange={this.handleFieldValueChange}/>
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="partnerPublicKeyTextArea">Paste Your Public Key Here</Label>
+                    <Input type="textarea" name="partnerPubKey" onChange={this.handleFieldValueChange}/>
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="exampleEmail">Partner code</Label>
                     <Input
-                      type="email"
-                      name="email"
-                      placeholder="with a placeholder"
+                      type="text"
+                      name="partnerCode"
+                      placeholder="This one is partner-code header provived by MoMo"
+                      onChange={this.handleFieldValueChange}
                     />
-                  </Col>
-                </FormGroup>
-                <FormGroup row>
-                  <Label for="examplePassword" sm={2}>
-                    Password
-                  </Label>
-                  <Col sm={10}>
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="reference1">Reference 1</Label>
                     <Input
-                      type="password"
-                      name="password"
-                      placeholder="password placeholder"
+                      type="text"
+                      name="reference1"
+                      placeholder="This one is the reference key such as contract ID, bill ID, loan ID..."
+                      onChange={this.handleFieldValueChange}
                     />
-                  </Col>
-                </FormGroup>
-                <FormGroup row>
-                  <Label for="exampleSelect" sm={2}>
-                    Select
-                  </Label>
-                  <Col sm={10}>
-                    <Input type="select" name="select" />
-                  </Col>
-                </FormGroup>
-                <FormGroup row>
-                  <Label for="exampleSelectMulti" sm={2}>
-                    Select Multiple
-                  </Label>
-                  <Col sm={10}>
-                    <Input type="select" name="selectMulti" multiple />
-                  </Col>
-                </FormGroup>
-                <FormGroup row>
-                  <Label for="exampleText" sm={2}>
-                    Text Area
-                  </Label>
-                  <Col sm={10}>
-                    <Input type="textarea" name="text" />
-                  </Col>
-                </FormGroup>
-                <FormGroup row>
-                  <Label for="exampleFile" sm={2}>
-                    File
-                  </Label>
-                  <Col sm={10}>
-                    <Input type="file" name="file" />
-                    <FormText color="muted">
-                      This is some placeholder block-level help text for the
-                      above input. It's a bit lighter and easily wraps to a new
-                      line.
-                    </FormText>
-                  </Col>
-                </FormGroup>
-                <FormGroup tag="fieldset" row>
-                  <Label for="checkbox2" sm={2}>
-                    Radio
-                  </Label>
-                  <Col sm={10}>
-                    <FormGroup check>
-                      <Label check>
-                        <Input type="radio" name="radio2" /> Option one is this
-                        and that—be sure to include why it's great
-                      </Label>
-                    </FormGroup>
-                    <FormGroup check>
-                      <Label check>
-                        <Input type="radio" name="radio2" /> Option two can be
-                        something else and selecting it will deselect option one
-                      </Label>
-                    </FormGroup>
-                    <FormGroup check disabled>
-                      <Label check>
-                        <Input type="radio" name="radio2" disabled /> Option
-                        three is disabled
-                      </Label>
-                    </FormGroup>
-                  </Col>
-                </FormGroup>
-                <FormGroup row>
-                  <Label for="checkbox2" sm={2}>
-                    Checkbox
-                  </Label>
-                  <Col sm={{ size: 10 }}>
-                    <FormGroup check>
-                      <Label check>
-                        <Input type="checkbox" id="checkbox2" /> Check me out
-                      </Label>
-                    </FormGroup>
-                  </Col>
-                </FormGroup>
-                <FormGroup check row>
-                  <Col sm={{ size: 10, offset: 2 }}>
-                    <Button>Submit</Button>
-                  </Col>
-                </FormGroup>
-              </Form>
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
-
-      <Row>
-        <Col xl={6} lg={12} md={12}>
-          <Card>
-            <CardHeader>Form Validation</CardHeader>
-            <CardBody>
-              <Form>
-                <FormGroup>
-                  <Label for="exampleEmail">Input with success</Label>
-                  <Input valid />
-                  <FormFeedback>
-                    <a href="https://github.com/twbs/bootstrap/issues/23372">
-                      A bug
-                    </a>{' '}
-                    fixed in (the currently unreleased) (
-                    <a href="https://github.com/twbs/bootstrap/pull/23377">
-                      PR
-                    </a>
-                    ) bootstrap{' '}
-                    <a href="https://github.com/twbs/bootstrap/issues/23278">
-                      v4 beta-2
-                    </a>{' '}
-                    shows invalid-feedback with is-valid inputs.
-                  </FormFeedback>
-                  <FormText>Example help text that remains unchanged.</FormText>
-                </FormGroup>
-                <FormGroup>
-                  <Label for="examplePassword">Input with danger</Label>
-                  <Input valid={false} />
-                  <FormFeedback>
-                    Oh noes! that name is already taken
-                  </FormFeedback>
-                  <FormText>Example help text that remains unchanged.</FormText>
-                </FormGroup>
-              </Form>
-            </CardBody>
-          </Card>
-        </Col>
-
-        <Col xl={6} lg={12} md={12}>
-          <Card>
-            <CardHeader>Hidden Labels</CardHeader>
-            <CardBody>
-              <Form inline>
-                <FormGroup>
-                  <Label for="exampleEmail" hidden>
-                    Email
-                  </Label>
-                  <Input type="email" name="email" placeholder="Email" />
-                </FormGroup>{' '}
-                <FormGroup>
-                  <Label for="examplePassword" hidden>
-                    Password
-                  </Label>
-                  <Input
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                  />
-                </FormGroup>{' '}
-                <Button>Submit</Button>
-              </Form>
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
-
-      <Row>
-        <Col xl={6} lg={12} md={12}>
-          <Card>
-            <CardHeader>Inline Form</CardHeader>
-            <CardBody>
-              <Form inline>
-                <FormGroup>
-                  <Label for="exampleEmail">Email</Label>{' '}
-                  <Input
-                    type="email"
-                    name="email"
-                    placeholder="something@idk.cool"
-                  />
-                </FormGroup>{' '}
-                <FormGroup>
-                  <Label for="examplePassword">Password</Label>{' '}
-                  <Input
-                    type="password"
-                    name="password"
-                    placeholder="don't tell!"
-                  />
-                </FormGroup>{' '}
-                <Button>Submit</Button>
-              </Form>
-            </CardBody>
-          </Card>
-        </Col>
-
-        <Col xl={6} lg={12} md={12}>
-          <Card>
-            <CardHeader>Inline Checkboxes</CardHeader>
-            <CardBody>
-              <Form>
-                <FormGroup check inline>
-                  <Label check>
-                    <Input type="checkbox" /> Some input
-                  </Label>
-                </FormGroup>
-                <FormGroup check inline>
-                  <Label check>
-                    <Input type="checkbox" /> Some other input
-                  </Label>
-                </FormGroup>
-              </Form>
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
-
-      <Row>
-        <Col xl={6} lg={12} md={12}>
-          <Card>
-            <CardHeader>Input Sizing</CardHeader>
-            <CardBody>
-              <Form>
-                <Input className="mb-2" placeholder="lg" bsSize="lg" />
-                <Input className="mb-2" placeholder="default" />
-                <Input className="mb-2" placeholder="sm" bsSize="sm" />
-                <Input className="mb-2" type="select" bsSize="lg">
-                  <option>Large Select</option>
-                </Input>
-                <Input className="mb-2" type="select">
-                  <option>Default Select</option>
-                </Input>
-                <Input className="mb-2" type="select" bsSize="sm">
-                  <option>Small Select</option>
-                </Input>
-              </Form>
-            </CardBody>
-          </Card>
-        </Col>
-
-        <Col xl={6} lg={12} md={12}>
-          <Card>
-            <CardHeader>Input Grid Sizing</CardHeader>
-            <CardBody>
-              <Form>
-                <FormGroup row>
-                  <Label for="exampleEmail" sm={2} size="lg">
-                    Email
-                  </Label>
-                  <Col sm={10}>
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="reference1">Amount</Label>
                     <Input
-                      type="email"
-                      name="email"
-                      placeholder="lg"
-                      bsSize="lg"
+                      type="text"
+                      name="amount"
+                      placeholder="This one is the amount which customer want to do repayment"
+                      onChange={this.handleFieldValueChange}
                     />
-                  </Col>
-                </FormGroup>
-                <FormGroup row>
-                  <Label for="exampleEmail2" sm={2}>
-                    Email
-                  </Label>
-                  <Col sm={10}>
+                  </FormGroup>
+                  <FormGroup check row>
+                      <Button onClick={event=>this.generateRequest()}>Submit</Button>
+                  </FormGroup>
+                </Form>
+              </CardBody>
+            </Card>
+
+            <Card>
+              <CardHeader>Check Info</CardHeader>
+              <CardBody>
+                <Form>
+                  <FormGroup>
+                    <Label for="checkInfoRequest"></Label>
+                    <Input type="textarea" name="checkInfoRequest" value={checkInfoRequestData}/>
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="checkInfoUrl">Check Info URL</Label>
                     <Input
-                      type="email"
-                      name="email"
-                      id="exampleEmail2"
-                      placeholder="default"
+                      type="text"
+                      name="checkInfoURL"
+                      placeholder="Check Info endpoint"
                     />
-                  </Col>
-                </FormGroup>
-              </Form>
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
-    </Page>
-  );
-};
+                  </FormGroup>
+                  <FormGroup check row>
+                      <Button onClick={event=>this.doCalCheckInfo()}>CHECK INFO</Button>
+                  </FormGroup>
+                </Form>
+              </CardBody>
+            </Card>
+            <Card>
+              <CardHeader>Payment Notification</CardHeader>
+              <CardBody>
+                <Form>
+                  <FormGroup>
+                    <Label for="paymentNotificationRequest"></Label>
+                    <Input type="textarea" name="paymentNotificationRequest" value={paymentNotifyRequestData}/>
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="paymentNotificationUrl">Payment Nofication URL</Label>
+                    <Input
+                      type="text"
+                      name="paymentNotificationURL"
+                      placeholder="Payment Notification endpoint"
+                    />
+                  </FormGroup>
+                  <FormGroup check row>
+                    <Button onClick={event=>this.doCalPaymentNotification()}>PAYMENT NOTIFICATION</Button>
+                  </FormGroup>
+                </Form>
+              </CardBody>
+            </Card>
+          </Col>
+
+          <Col xl={6} lg={12} md={12}>
+            <Card>
+              <CardHeader>logs</CardHeader>
+              <CardBody>
+                <Form>
+                  <FormGroup check row>
+                      <Button>Clear</Button>
+                  </FormGroup>
+                </Form>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </Page>
+    );
+  };
+}
 
 export default StandardPaymentTester;
