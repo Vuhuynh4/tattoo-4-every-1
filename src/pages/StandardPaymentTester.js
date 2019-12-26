@@ -8,9 +8,7 @@ import {
   CardHeader,
   Col,
   Form,
-  FormFeedback,
   FormGroup,
-  FormText,
   Input,
   Label,
   Row,
@@ -21,15 +19,13 @@ class StandardPaymentTester extends Component {
   constructor(props){
     super(props);
     this.state = {
-      initData: {
-        momoPubKey: null,
-        partnerPubKey: null,
-        partnerCode: null,
-        checkInfoURL: null,
-        paymentNotifyURL: null,
-        reference1: null,
-        amount: 0,
-      },
+      momoPubKey: null,
+      partnerPubKey: null,
+      partnerCode: null,
+      checkInfoURL: null,
+      paymentNotifyURL: null,
+      reference1: null,
+      amount: 0,
       checkInfoRequest: {
         requestId: null,
         reference1: null,
@@ -45,19 +41,31 @@ class StandardPaymentTester extends Component {
   handleInitDataFieldValueChange = event => {
     let fieldName = event.target.name;
     this.setState({
-       initData: {
-        [fieldName]: event.target.value },
-    });
+        [fieldName]: event.target.value });
   }
 
   generateRequest() {
     console.log('alo 1');
-    console.log('MoMo Pub Key:' + this.state.initData.momoPubKey);
-    console.log('Partner Pub Key:' + this.state.initData.partnerPubKey);
-    console.log('Partner Code:' + this.state.initData.partnerCode);
-    console.log('Reference 1:' + this.state.initData.reference1);
-    console.log('Amount:' + this.state.initData.amount);
+    console.log('MoMo Pub Key:' + this.state.momoPubKey);
+    console.log('Partner Pub Key:' + this.state.partnerPubKey);
+    console.log('Partner Code:' + this.state.partnerCode);
+    console.log('Reference 1:' + this.state.reference1);
+    console.log('Amount:' + this.state.amount);
 
+    this.setState({
+      checkInfoRequest: {
+        requestId: Date.now()+'',
+        reference1: this.state.reference1+'',
+      },
+    });
+
+    this.setState({
+      paymentNotifyRequest: {
+        requestId: Date.now()+'',
+        reference1: this.state.reference1+'',
+        amount: this.state.amount,
+      },
+    });
   }
 
   doCalCheckInfo() {
@@ -69,9 +77,6 @@ class StandardPaymentTester extends Component {
   }
 
   render() {
-    this.state.checkInfoRequest.requestId = Date.now();
-    this.state.paymentNotifyRequest.requestId = Date.now();
-    
     const checkInfoRequestData = JSON.stringify(this.state.checkInfoRequest);
     const paymentNotifyRequestData = JSON.stringify(this.state.paymentNotifyRequest);
     return (
@@ -84,11 +89,11 @@ class StandardPaymentTester extends Component {
                 <Form>
                   <FormGroup>
                     <Label for="momoPublicKeyTextArea">MOMO Public Key Here</Label>
-                    <Input type="textarea" name="momoPubKey" onChange={this.handleFieldValueChange}/>
+                    <Input type="textarea" name="momoPubKey" onChange={this.handleInitDataFieldValueChange}/>
                   </FormGroup>
                   <FormGroup>
                     <Label for="partnerPublicKeyTextArea">Paste Your Public Key Here</Label>
-                    <Input type="textarea" name="partnerPubKey" onChange={this.handleFieldValueChange}/>
+                    <Input type="textarea" name="partnerPubKey" onChange={this.handleInitDataFieldValueChange}/>
                   </FormGroup>
                   <FormGroup>
                     <Label for="exampleEmail">Partner code</Label>
@@ -96,7 +101,7 @@ class StandardPaymentTester extends Component {
                       type="text"
                       name="partnerCode"
                       placeholder="This one is partner-code header provived by MoMo"
-                      onChange={this.handleFieldValueChange}
+                      onChange={this.handleInitDataFieldValueChange}
                     />
                   </FormGroup>
                   <FormGroup>
@@ -105,7 +110,7 @@ class StandardPaymentTester extends Component {
                       type="text"
                       name="reference1"
                       placeholder="This one is the reference key such as contract ID, bill ID, loan ID..."
-                      onChange={this.handleFieldValueChange}
+                      onChange={this.handleInitDataFieldValueChange}
                     />
                   </FormGroup>
                   <FormGroup>
@@ -114,7 +119,7 @@ class StandardPaymentTester extends Component {
                       type="text"
                       name="amount"
                       placeholder="This one is the amount which customer want to do repayment"
-                      onChange={this.handleFieldValueChange}
+                      onChange={this.handleInitDataFieldValueChange}
                     />
                   </FormGroup>
                   <FormGroup check row>
