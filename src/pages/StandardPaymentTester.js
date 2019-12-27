@@ -49,13 +49,6 @@ class StandardPaymentTester extends Component {
   }
 
   generateRequest() {
-    console.log('alo 1');
-    console.log('MoMo Pub Key:' + this.state.momoPubKey);
-    console.log('Partner Pub Key:' + this.state.partnerPubKey);
-    console.log('Partner Code:' + this.state.partnerCode);
-    console.log('Reference 1:' + this.state.reference1);
-    console.log('Amount:' + this.state.amount);
-
     const checkReq = this.state.checkInfoRequest;
     checkReq.reference1 = this.state.reference1;
     this.setState({
@@ -68,13 +61,6 @@ class StandardPaymentTester extends Component {
     this.setState({
       paymentNotifyRequest: paymentReq,
     });
-    // this.setState({
-    //   paymentNotifyRequest: {
-    //     requestId: Date.now()+'',
-    //     reference1: this.state.reference1+'',
-    //     amount: this.state.amount,
-    //   },
-    // });
   }
 
   doCalCheckInfo() {
