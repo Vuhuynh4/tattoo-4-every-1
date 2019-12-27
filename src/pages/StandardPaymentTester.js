@@ -1,5 +1,6 @@
 import Page from 'components/Page';
 import api from '../services/api';
+import JSONPretty from 'react-json-pretty';
 import React, {Component} from 'react';
 import {
   Button,
@@ -24,16 +25,19 @@ class StandardPaymentTester extends Component {
       partnerCode: null,
       checkInfoURL: null,
       paymentNotifyURL: null,
-      reference1: null,
+      reference1: '',
       amount: 0,
       checkInfoRequest: {
-        requestId: null,
-        reference1: null,
+        requestId: Date.now()+'',
+        reference1: '',
       },
       paymentNotifyRequest: {
-        requestId: null,
-        reference1: null,
+        requestId: Date.now()+'',
+        reference1: '',
         amount: 0,
+        message:'success',
+        paymentRef: Date.now()+'',
+        dateInMillis: Date.now()+'',
       }
     };
   }
@@ -52,20 +56,25 @@ class StandardPaymentTester extends Component {
     console.log('Reference 1:' + this.state.reference1);
     console.log('Amount:' + this.state.amount);
 
+    const checkReq = this.state.checkInfoRequest;
+    checkReq.reference1 = this.state.reference1;
     this.setState({
-      checkInfoRequest: {
-        requestId: Date.now()+'',
-        reference1: this.state.reference1+'',
-      },
+      checkInfoRequest: checkReq,
     });
 
+    const paymentReq = this.state.paymentNotifyRequest;
+    paymentReq.reference1 = this.state.reference1+'';
+    paymentReq.amount = this.state.amount;
     this.setState({
-      paymentNotifyRequest: {
-        requestId: Date.now()+'',
-        reference1: this.state.reference1+'',
-        amount: this.state.amount,
-      },
+      paymentNotifyRequest: paymentReq,
     });
+    // this.setState({
+    //   paymentNotifyRequest: {
+    //     requestId: Date.now()+'',
+    //     reference1: this.state.reference1+'',
+    //     amount: this.state.amount,
+    //   },
+    // });
   }
 
   doCalCheckInfo() {
@@ -134,8 +143,8 @@ class StandardPaymentTester extends Component {
               <CardBody>
                 <Form>
                   <FormGroup>
-                    <Label for="checkInfoRequest"></Label>
-                    <Input type="textarea" name="checkInfoRequest" value={checkInfoRequestData}/>
+                    <Input type="textarea" hidden name="checkInfoRequest" value={checkInfoRequestData}/>
+                    <JSONPretty id="json-pretty" data={checkInfoRequestData}></JSONPretty>
                   </FormGroup>
                   <FormGroup>
                     <Label for="checkInfoUrl">Check Info URL</Label>
@@ -156,8 +165,8 @@ class StandardPaymentTester extends Component {
               <CardBody>
                 <Form>
                   <FormGroup>
-                    <Label for="paymentNotificationRequest"></Label>
-                    <Input type="textarea" name="paymentNotificationRequest" value={paymentNotifyRequestData}/>
+                    <Input type="textarea" hidden name="paymentNotificationRequest" value={paymentNotifyRequestData}/>
+                    <JSONPretty id="json-pretty" data={paymentNotifyRequestData}></JSONPretty>
                   </FormGroup>
                   <FormGroup>
                     <Label for="paymentNotificationUrl">Payment Nofication URL</Label>
